@@ -36,7 +36,7 @@ namespace Cloudeon.API.Services.Vehicle
         public async Task<ServiceResponse<GetVehicleDto>> GetVehicleById(int id)
         {
             var serviceResponse = new ServiceResponse<GetVehicleDto>();
-            var dbVehicle = await _context.Vehicles.FirstOrDefaultAsync(v => v.Id == id);
+            var dbVehicle = await _context.Vehicles.Include(l=>l.Locations.Where(x=>x.VehicleId==x.Vehicle.Id)).FirstOrDefaultAsync(v => v.Id == id);
             serviceResponse.Data = _mapper.Map<GetVehicleDto>(dbVehicle);
             return serviceResponse;
         }
