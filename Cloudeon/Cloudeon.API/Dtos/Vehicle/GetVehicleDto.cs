@@ -1,4 +1,5 @@
-﻿using Cloudeon.API.Models;
+﻿using Cloudeon.API.Dtos.GeoLocation;
+using Cloudeon.API.Models;
 
 namespace Cloudeon.API.Dtos.Vehicle
 {
@@ -8,6 +9,6 @@ namespace Cloudeon.API.Dtos.Vehicle
         public string Registration { get; set; }
         public string Make { get; set; }
         public string Model { get; set; }
-        public List<Models.GeoLocation> Locations { get; set; }
+        public List<GetGetLocationsDto> Locations { get; set; }
     }
 }

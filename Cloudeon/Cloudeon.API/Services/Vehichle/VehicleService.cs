@@ -24,7 +24,11 @@ namespace Cloudeon.API.Services.Vehicle
         public async Task<ServiceResponse<List<GetVehicleDto>>> GetAllVehicles()
         {
             var serviceResponse = new ServiceResponse<List<GetVehicleDto>>();
-            var dbVehicles = await _context.Vehicles.ToListAsync();
+
+            //context.Foo.Include(o => o.Bars).ThenInclude(x => x.Xpto).ToList();
+
+            var dbVehicles = await _context.Vehicles.Include(l => l.Locations.Where(x=>x.VehicleId==x.Vehicle.Id)).ToListAsync();
+
             serviceResponse.Data = dbVehicles.Select(v => _mapper.Map<GetVehicleDto>(v)).ToList();
             return serviceResponse;
         }
