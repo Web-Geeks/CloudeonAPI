@@ -22,17 +22,25 @@ namespace Cloudeon.API.Services.Location
 
         public async Task<ServiceResponse<List<GetGetLocationsDto>>> AddNewLocation(AddGeoLocationDto newGeoLocation)
         {
-
             var serviceResponse = new ServiceResponse<List<GetGetLocationsDto>>();
-            GeoLocation geoLocation = _mapper.Map<GeoLocation>(newGeoLocation);
-           _context.GeoLocations.Add(geoLocation);
-            await _context.SaveChangesAsync();
+            try
+            {
+                GeoLocation geoLocation = _mapper.Map<GeoLocation>(newGeoLocation);
+                _context.GeoLocations.Add(geoLocation);
+                await _context.SaveChangesAsync();
 
-            serviceResponse.Data = await _context.GeoLocations.Where(v => v.Vehicle.Id == newGeoLocation.VehicleId)
-                .Select(v => _mapper.Map<GetGetLocationsDto>(v)).ToListAsync();
+                serviceResponse.Data = await _context.GeoLocations.Where(v => v.Vehicle.Id == newGeoLocation.VehicleId)
+                    .Select(v => _mapper.Map<GetGetLocationsDto>(v)).ToListAsync();
+            }
+            catch (Exception e)
+            {
+                serviceResponse.IsSuccess = false;
+                serviceResponse.Message = e.Message;
+
+            }
+
 
             return serviceResponse;
         }
     }
 }
-    
